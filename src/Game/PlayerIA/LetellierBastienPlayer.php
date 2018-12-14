@@ -15,10 +15,11 @@ class LetellierBastienPlayer extends Player
     protected $opponentSide;
     protected $result;
 
+    //Regarde si c'est uniquement un friend
     protected function is_only_friend()
     {
       for ($i = 0; $this->result->getNbRound() > $i; $i++) {
-        if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::foeChoice())
+        if ($this->result->getChoicesFor($this->opponentSide)[$i] == parent::foeChoice())
         {
           return false;
         }
@@ -30,11 +31,11 @@ class LetellierBastienPlayer extends Player
     {
       $foe = 0;
       $cool = 0;
-      if ($this->result->getNbRound() > 2)
+      if ($this->result->getNbRound() > 3)
         return false;
       for ($i = 0; $this->result->getNbRound() > $i; $i++) {
-        if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::friendChoice()
-        && $this->result->getChoicesFor($this->mySide)[i - 1] == parent::foeChoice())
+        if ($this->result->getChoicesFor($this->opponentSide)[$i] == parent::friendChoice()
+        && $this->result->getChoicesFor($this->mySide)[$i - 1] == parent::foeChoice())
         {
           $cool++;
           continue;
@@ -42,7 +43,7 @@ class LetellierBastienPlayer extends Player
         else {
           return false;
         }
-        if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::friendChoice())
+        if ($this->result->getChoicesFor($this->opponentSide)[$i] == parent::friendChoice())
         {
           $cool++;
         }
