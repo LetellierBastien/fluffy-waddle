@@ -45,16 +45,13 @@ class BastienletellierPlayer extends Player
         {
           return parent::friendChoice();
         }
-        print(lol);
 
         if ($this->result->getLastChoiceFor($this->opponentSide) == parent::foeChoice())
         {
           if ($this->result->getLastChoiceFor($this->mySide) == parent::friendChoice())
           {
-            print(lol);
             if ($this->result->getLastScoreFor($this->opponentSide) >= $this->result->getLastScoreFor($this->mySide))
             {
-              print(lil);
               return parent::foeChoice();
             }
             else {
