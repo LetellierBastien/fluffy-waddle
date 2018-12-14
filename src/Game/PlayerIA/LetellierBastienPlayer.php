@@ -105,11 +105,17 @@ class LetellierBastienPlayer extends Player
             //Est ce que il est meilleur que moi?
             if ($this->result->getLastScoreFor($this->opponentSide) >= $this->result->getLastScoreFor($this->mySide))
             {
-              //Alors je suis foe
-              return parent::foeChoice();
+              //Est ce que ca fait qu'une fois?
+              if ($this->result->getChoicesFor($this->opponentSide)[$this->result->getNbRound() - 1] == parent::friendChoice())
+              //Alors je suis friend
+                return parent::friendChoice();
+                else {
+                  //Alors je suis foe
+                  return parent::foeChoice();
+                }
             }
             else {
-              //Alors je redeviens gentil pour gagner du cash
+              //Alors je redeviens gentil pour gagner des point
               return parent::friendChoice();
             }
           }
