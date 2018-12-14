@@ -17,9 +17,7 @@ class LetellierBastienPlayer extends Player
 
     protected function is_only_friend()
     {
-      if (count($this->result->getChoicesFor($this->opponentSide)) < 2)
-        return false;
-      for ($i = 0; count($this->result->getChoicesFor($this->opponentSide)) > $i; $i++) {
+      for ($i = 0; $this->result->getNbRound() > $i; $i++) {
         if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::foeChoice())
         {
           return false;
@@ -32,7 +30,7 @@ class LetellierBastienPlayer extends Player
     {
       $foe = 0;
       $cool = 0;
-      for ($i = 0; count($this->result->getChoicesFor($this->opponentSide)) > $i; $i++) {
+      for ($i = 0; $this->result->getNbRound() > $i; $i++) {
         if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::friendChoice()
         && $this->result->getChoicesFor($this->mySide)[i - 1] == parent::foeChoice())
         {
@@ -80,59 +78,60 @@ class LetellierBastienPlayer extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
 
-        //Premier on est cool
+        //Si c'est le premier tour ==> est friendly
         if (count($this->result->getChoicesFor($this->mySide)) == 0)
           return parent::friendChoice();
 
-        //Si le mec est cool
+        //Est ce que j'ai eu une pièce?
         if ($this->result->getLastChoiceFor($this->opponentSide) == parent::friendChoice())
         {
-          //Est ce que c'est un pigeon?
+          //Alors est ce que la personne contre moi est un "friendly"
           if ($this->is_only_friend())
             return parent::foeChoice();
-          //Bon alors est ce qu'il est con?
+          //Dommage, alors est ce que c'est bien d'etre méchant contre lui?
           else if ($this->is_better_to_foe())
             return parent::foeChoice();
 
-          //Ah :/ il est ni l'un ni l'autre donc on se la joue cool :/
+          //ah... bon ba dans le doute on est cool
           return parent::friendChoice();
         }
 
-        //Si il a fait un coup de p...oney
+        //Est ce que j'ai rien reçus
         if ($this->result->getLastChoiceFor($this->opponentSide) == parent::foeChoice())
         {
-          //Si avant j'avais fait un coup de poney
+          //Est ce que j'était cool?
           if ($this->result->getLastChoiceFor($this->mySide) == parent::friendChoice())
           {
-            //Bon ok my bad mais est ce qu'il me bèze?
+            //Est ce que il est meilleur que moi?
             if ($this->result->getLastScoreFor($this->opponentSide) >= $this->result->getLastScoreFor($this->mySide))
             {
-              //Batard casse toi
+              //Alors je suis foe
               return parent::foeChoice();
             }
             else {
-              //Bon ok tant que je te bat çà passe
+              //Alors je redeviens gentil pour gagner du cash
               return parent::friendChoice();
             }
           }
           else {
-            //T'es serieux???? Tu gagne en plus?
+            //Est ce qu'il a plus de point que moi alors?
             if ($this->result->getLastScoreFor($this->opponentSide) >= $this->result->getLastScoreFor($this->mySide))
             {
-              //Casse toi!
+              //Alors je foe
               return parent::foeChoice();
             }
             else {
-              //Pfff... t'es un gamin... vasi t'as pas fait ca la dernière fois qd même?
-              if ($this->result->getChoicesFor($this->opponentSide)[count($this->result->getChoicesFor($this->opponentSide)) - 1])
-              //Tch... t'es dure en affaire... vasi prend ma pièce...
+              //Est ce que ca fait qu'une fois?
+              if ($this->result->getChoicesFor($this->opponentSide)[$this->result->getNbRound() - 1] == parent::friendChoice())
+              //Alors je suis friend
                 return parent::friendChoice();
               else
-              //Vtff batard je garde mon cash
+              //Alors je suis foe
                 return parent::foeChoice();
             }
           }
         }
+        //au cas ou je suis friend
         return parent::friendChoice();
     }
 
