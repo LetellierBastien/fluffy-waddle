@@ -17,6 +17,8 @@ class LetellierBastienPlayer extends Player
 
     protected function is_only_friend()
     {
+      if (count($this->result->getChoicesFor($this->opponentSide)) < 2)
+        return false;
       for ($i = 0; count($this->result->getChoicesFor($this->opponentSide)) > $i; $i++) {
         if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::foeChoice())
         {
@@ -29,9 +31,10 @@ class LetellierBastienPlayer extends Player
     protected function is_better_to_foe()
     {
       for ($i = 0; count($this->result->getChoicesFor($this->opponentSide)) > $i; $i++) {
-        if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::foeChoice())
+        if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::friendChoice()
+        && $this->result->getChoicesFor($this->mySide)[i - 1] == parent::foeChoice())
         {
-          return false;
+          continue;
         }
       }
       return true;
@@ -63,38 +66,56 @@ class LetellierBastienPlayer extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
 
+        //Premier on est cool
         if (count($this->result->getChoicesFor($this->mySide)) == 0)
           return parent::friendChoice();
+
+        //Si le mec est cool
         if ($this->result->getLastChoiceFor($this->opponentSide) == parent::friendChoice())
         {
+          //Est ce que c'est un pigeon?
           if ($this->is_only_friend())
             return parent::foeChoice();
+          //Bon alors est ce qu'il est con?
           else if ($this->is_better_to_foe())
             return parent::foeChoice();
 
+          //Ah :/ il est ni l'un ni l'autre donc on se la joue cool :/
           return parent::friendChoice();
         }
 
+        //Si il a fait un coup de p...oney
         if ($this->result->getLastChoiceFor($this->opponentSide) == parent::foeChoice())
         {
+          //Si avant j'avais fait un coup de poney
           if ($this->result->getLastChoiceFor($this->mySide) == parent::friendChoice())
           {
+            //Bon ok my bad mais est ce qu'il me bèze?
             if ($this->result->getLastScoreFor($this->opponentSide) >= $this->result->getLastScoreFor($this->mySide))
             {
+              //Batard casse toi
               return parent::foeChoice();
             }
             else {
+              //Bon ok tant que je te bat çà passe
               return parent::friendChoice();
             }
           }
           else {
+            //T'es serieux???? Tu gagne en plus?
             if ($this->result->getLastScoreFor($this->opponentSide) >= $this->result->getLastScoreFor($this->mySide))
             {
+              //Casse toi!
               return parent::foeChoice();
             }
             else {
-              if ($this->result->getLastScoreFor($this->opponentSide) >= $this->result->getLastScoreFor($this->mySide))
-              return parent::friendChoice();
+              //Pfff... t'es un gamin... vasi t'as pas fait ca la dernière fois qd même?
+              if ($this->result->getChoicesFor($this->opponentSide)[count($this->result->getChoicesFor($this->opponentSide)) - 1])
+              //Tch... t'es dure en affaire... vasi prend ma pièce...
+                return parent::friendChoice();
+              else
+              //Vtff batard je garde mon cash
+                return parent::foeChoice();
             }
           }
         }
