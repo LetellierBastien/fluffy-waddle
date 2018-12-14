@@ -42,7 +42,7 @@ class LetellierBastienPlayer extends Player
       $wtf = 0;
       $normal = 0;
       //Regarde si quand on dit non il dit non ensuite
-      for ($i = 0; $this->result->getNbRound() > $i; $i++) {
+      for ($i = 1; $this->result->getNbRound() > $i; $i++) {
         if ($this->result->getChoicesFor($this->opponentSide)[$i] == parent::friendChoice()
         && $this->result->getChoicesFor($this->mySide)[$i - 1] == parent::foeChoice())
         {
