@@ -15,6 +15,28 @@ class LetellierBastienPlayer extends Player
     protected $opponentSide;
     protected $result;
 
+    protected function is_only_friend()
+    {
+      for ($i = 0; count($this->result->getChoicesFor($this->opponentSide)) > $i; $i++) {
+        if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::foeChoice())
+        {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    protected function is_better_to_foe()
+    {
+      for ($i = 0; count($this->result->getChoicesFor($this->opponentSide)) > $i; $i++) {
+        if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::foeChoice())
+        {
+          return false;
+        }
+      }
+      return true;
+    }
+
     public function getChoice()
     {
         // -------------------------------------    -----------------------------------------------------
@@ -41,8 +63,15 @@ class LetellierBastienPlayer extends Player
         // How can i display the result of each round ? $this->prettyDisplay()
         // -------------------------------------    -----------------------------------------------------
 
+        if (count($this->result->getChoicesFor($this->mySide)) == 0)
+          return parent::friendChoice();
         if ($this->result->getLastChoiceFor($this->opponentSide) == parent::friendChoice())
         {
+          if ($this->is_only_friend())
+            return parent::foeChoice();
+          else if ($this->is_better_to_foe())
+            return parent::foeChoice();
+
           return parent::friendChoice();
         }
 
@@ -64,6 +93,7 @@ class LetellierBastienPlayer extends Player
               return parent::foeChoice();
             }
             else {
+              if ($this->result->getLastScoreFor($this->opponentSide) >= $this->result->getLastScoreFor($this->mySide))
               return parent::friendChoice();
             }
           }
