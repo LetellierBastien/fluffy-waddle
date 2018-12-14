@@ -18,30 +18,41 @@ class LetellierBastienPlayer extends Player
     //Regarde si c'est uniquement un friend
     protected function is_only_friend()
     {
+      if ($this->result->getNbRound() > 3)
+        return false;
+      //Regarde s'il est toujours friend
       for ($i = 0; $this->result->getNbRound() > $i; $i++) {
         if ($this->result->getChoicesFor($this->opponentSide)[$i] == parent::foeChoice())
         {
+          //Il l'est pas
           return false;
         }
       }
+      //Il est bon
       return true;
     }
 
+    //Regarde si c'est mieux d'etre foe
     protected function is_better_to_foe()
     {
-      $foe = 0;
-      $cool = 0;
       if ($this->result->getNbRound() > 3)
         return false;
+      $foe = 0;
+      $cool = 0;
+      $wtf = 0;
+      $normal = 0;
+      //Regarde si quand on dit non il dit non ensuite
       for ($i = 0; $this->result->getNbRound() > $i; $i++) {
         if ($this->result->getChoicesFor($this->opponentSide)[$i] == parent::friendChoice()
         && $this->result->getChoicesFor($this->mySide)[$i - 1] == parent::foeChoice())
         {
           $cool++;
+          $wtf++;
           continue;
         }
-        else {
-          return false;
+        else if ($this->result->getChoicesFor($this->opponentSide)[$i] == parent::foeChoice()
+        && $this->result->getChoicesFor($this->mySide)[$i - 1] == parent::foeChoice()) {
+          $normal++;
         }
         if ($this->result->getChoicesFor($this->opponentSide)[$i] == parent::friendChoice())
         {
@@ -52,7 +63,8 @@ class LetellierBastienPlayer extends Player
         }
       }
 
-      return $foe > $cool;
+      //Si en général il est foe alors on est foe aussi
+      return $foe > $cool || $wtf > $normal;
     }
 
     public function getChoice()
