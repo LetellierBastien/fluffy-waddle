@@ -30,14 +30,28 @@ class LetellierBastienPlayer extends Player
 
     protected function is_better_to_foe()
     {
+      $foe = 0;
+      $cool = 0;
       for ($i = 0; count($this->result->getChoicesFor($this->opponentSide)) > $i; $i++) {
         if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::friendChoice()
         && $this->result->getChoicesFor($this->mySide)[i - 1] == parent::foeChoice())
         {
+          $cool++;
           continue;
         }
+        else {
+          return false;
+        }
+        if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::friendChoice())
+        {
+          $cool++;
+        }
+        else {
+          $foe++;
+        }
       }
-      return true;
+
+      return $foe > $cool;
     }
 
     public function getChoice()
