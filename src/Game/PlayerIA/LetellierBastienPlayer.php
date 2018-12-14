@@ -18,7 +18,7 @@ class LetellierBastienPlayer extends Player
     //Regarde si c'est uniquement un friend
     protected function is_only_friend()
     {
-      if ($this->result->getNbRound() > 3)
+      if ($this->result->getNbRound() < 3)
         return false;
       //Regarde s'il est toujours friend
       for ($i = 0; $this->result->getNbRound() > $i; $i++) {
