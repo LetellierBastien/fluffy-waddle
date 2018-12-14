@@ -30,6 +30,8 @@ class LetellierBastienPlayer extends Player
     {
       $foe = 0;
       $cool = 0;
+      if ($this->result->getNbRound() > 2)
+        return false;
       for ($i = 0; $this->result->getNbRound() > $i; $i++) {
         if ($this->result->getChoicesFor($this->opponentSide)[i] == parent::friendChoice()
         && $this->result->getChoicesFor($this->mySide)[i - 1] == parent::foeChoice())
